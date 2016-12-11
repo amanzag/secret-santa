@@ -103,7 +103,7 @@ public class SecretSantaResource {
             @PathVariable("userName") String userName,
             @RequestParam(value="token", required=true) String token) {
          User user = Optional.ofNullable(userRepo.findOne(userName))
-                 .filter(u -> u.getGame().getName().equals(gameName))
+                 .filter(u -> u.getGame().getId().equals(gameName))
                  .orElseThrow(() -> new NotFoundException());
          if (!user.getToken().toString().equals(token)) {
              throw new UnauthorizedException();

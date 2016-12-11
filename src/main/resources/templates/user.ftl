@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 
 <html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
 
 <body>
-Vas a participar en el amigo invisible de la familia x que se va a celebrar el dia y
-El precio maximo del regalo es z
+Hola ${user.name}. Te ha tocado participar en el 
+<h1>amigo invisible</h1> de ${user.game.name} que se va a celebrar el día ${user.game.date}.
+<br>
+Para saber quien es tu amigo invisible
+<br>
+<button class="chbutton">Pincha aquí</button>
+<br>
 
-hola ${user.name}, te ha tocado comprarle un regalo a <strong>${user.giftReceiver.name}</strong>
+Te ha tocado comprarle un regalo a <strong>${user.giftReceiver.name}</strong>
+<br>
+El precio maximo del regalo es ${user.game.maxPrice}
+<br>
+<img src="/secret-santa/${user.game.id}/users/${user.id}/photo">
 </body>
 
 </html>
