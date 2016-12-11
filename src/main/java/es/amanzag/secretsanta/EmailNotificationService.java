@@ -25,12 +25,12 @@ public class EmailNotificationService {
     @Value("${smtp.password:password}") private String smtpPassword;
     @Value("${smtp.host:smtp.gmail.com}") private String smtpHost;
     @Value("${smtp.port:587}") private int smtpPort;
-    @Value("${application.hostname:localhost}") private String appHost;
+    @Value("${application.hostname}") private String appHost;
     @Value("${mail.enabled:true}") private boolean mailEnabled;
     
     private final static String SUBJECT = "Sorpresa!";
     private final static String BODY_TEMPLATE = "Hay un <a href='%s'>mensaje<a> para ti.";
-    private final static String LINK_TEMPLATE = "http://%s:8080/secret-santa/%s/users/%s?token=%s";
+    private final static String LINK_TEMPLATE = "http://%s/secret-santa/%s/users/%s?token=%s";
 
     public void notify(User u) throws AddressException, MessagingException {
         Properties props = System.getProperties();

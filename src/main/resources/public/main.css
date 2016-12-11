@@ -19,6 +19,7 @@ h1 {
 }
 img {
 	max-width: 75%;
+	max-height: 600px;
 }
 .chbutton {
     display: inline-block;
@@ -38,9 +39,9 @@ img {
     border-radius: 2px;
     border: 1px solid #4c0300;
     box-shadow: inset 1px 1px 0px rgba(255,255,255,0.25), /* highlight */
- inset 0 0 6px #a23227, /* inner glow */
- inset 0 80px 80px -40px #ac3223, /* gradient */
- 1px 1px 3px rgba(0,0,0,0.75);
+        inset 0 0 6px #a23227, /* inner glow */
+        inset 0 80px 80px -40px #ac3223, /* gradient */
+        1px 1px 3px rgba(0,0,0,0.75);
     position: relative;
     overflow: visible;
     -webkit-transition: 500ms linear;
@@ -48,4 +49,24 @@ img {
     -o-transition: 500ms linear;
     transition: 500ms linear;
     text-transform: uppercase;
+    margin-top: 10px;
+}
+#secret-section {
+	display: none;
+}
+#top-section {
+	margin-bottom: 15px;
+}
+.info {
+	color: #FFF;
+	background: #5e0d0c;
+	border: 1px solid #4c0300;
+    box-shadow: inset 1px 1px 0px rgba(255,255,255,0.25), /* highlight */
+        inset 0 0 6px #a23227, /* inner glow */
+        inset 0 80px 80px -40px #ac3223, /* gradient */
+        1px 1px 3px rgba(0,0,0,0.75);
+    margin-top: 10px;
+    padding: 10px;
+    width: 75%;
+    display: inline-block;
 }
