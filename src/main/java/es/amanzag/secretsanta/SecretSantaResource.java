@@ -1,5 +1,6 @@
 package es.amanzag.secretsanta;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -31,6 +34,8 @@ public class SecretSantaResource {
     @Autowired UserRepository userRepo;
     
     @Autowired GameRepository gameRepo;
+    
+    @Autowired PhotoStorageService photoStorageService;
     
     @GetMapping
     public List<Game> getGames() {
@@ -68,6 +73,29 @@ public class SecretSantaResource {
         
         return ResponseEntity.noContent().build();
     }
+    
+    @PostMapping(path="/{gameId}/users/{userId}/photo")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadPicture(
+            @PathVariable("gameId") String gameId, 
+            @PathVariable("userId") String userId, 
+            @RequestParam("file") MultipartFile file) throws IOException {
+        User u = Optional.ofNullable(userRepo.findOne(userId))
+                .filter(user -> user.getGame().getId().equals(gameId))
+                .orElseThrow(() -> new NotFoundException());
+        photoStorageService.savePicture(u, file.getInputStream());
+    }
+    
+    @GetMapping(path="/{gameId}/users/{userId}/photo", produces=MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody InputStreamResource getUserPhoto(
+            @PathVariable("gameId") String gameId, 
+            @PathVariable("userId") String userId) throws IOException {
+        User u = Optional.ofNullable(userRepo.findOne(userId))
+                .filter(user -> user.getGame().getId().equals(gameId))
+                .orElseThrow(() -> new NotFoundException());
+        return new InputStreamResource(photoStorageService.getPicture(u));
+    }
+        
     
     @GetMapping(path="/{gameName}/users/{userName}", produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody User getUser(
