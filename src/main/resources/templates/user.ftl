@@ -18,7 +18,7 @@ Te ha tocado comprarle un regalo a <strong>${user.giftReceiver.name}</strong>
 <br>
 El precio maximo del regalo es ${user.game.maxPrice}
 <br>
-<img src="/secret-santa/${user.game.id}/users/${user.id}/photo">
+<img src="/secret-santa/${user.game.id}/users/${user.giftReceiver.id}/photo">
 </body>
 
 </html>

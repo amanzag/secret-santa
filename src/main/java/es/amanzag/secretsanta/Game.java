@@ -14,9 +14,9 @@ public class Game {
 
     @NotNull private String name;
     
-    private String date;
+    @NotNull private String date;
     
-    private String maxPrice;
+    @NotNull private String maxPrice;
     
     @OneToMany(mappedBy="game")
     private List<User> users;

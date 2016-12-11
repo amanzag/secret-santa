@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class SecretSantaResource {
     @Autowired GameRepository gameRepo;
     
     @Autowired PhotoStorageService photoStorageService;
+    
+    @Autowired EmailNotificationService notificationService;
     
     @GetMapping
     public List<Game> getGames() {
@@ -121,16 +125,6 @@ public class SecretSantaResource {
         return mav;
     }
     
-    @GetMapping(path="/{gameName}/users/{userName}/link")
-    public @ResponseBody String getUserLink(
-            @PathVariable("gameName") String gameName, 
-            @PathVariable("userName") String userName) {
-         return Optional.ofNullable(userRepo.findOne(userName))
-                 .filter(u -> u.getGame().getName().equals(gameName))
-                 .map(u -> "http://localhost:8080/"+gameName+"/users/"+userName+"?token="+u.getToken().toString())
-                 .orElseThrow(() -> new NotFoundException());
-    }
-    
     @PostMapping("/{gameName}/draw") @ResponseStatus(HttpStatus.OK)
     @Transactional
     public void draw(@PathVariable("gameName") String gameName) {
@@ -141,12 +135,13 @@ public class SecretSantaResource {
     }
     
     @PostMapping("/{gameName}/notify-users") @ResponseStatus(HttpStatus.OK)
-    public void notifyUsers(@PathVariable("gameName") String gameName) {
-        Game myGame = gameRepo.findOne(gameName);
-        List<User> myUsers = myGame.getUsers();
-        for(User u : myUsers) {
-            String link = "http://localhost:8080/secret-santa/"+gameName+"/users/"+u.getId()+"?token="+u.getToken();
-            System.out.println(link);
+    public void notifyUsers(@PathVariable("gameName") String gameName) throws AddressException, MessagingException {
+        List<User> users = Optional.ofNullable(gameRepo.findOne(gameName))
+                .map(game -> game.getUsers())
+                .orElseThrow(() -> new NotFoundException());
+        
+        for(User u : users) {
+            notificationService.notify(u);
         }
     }
     
