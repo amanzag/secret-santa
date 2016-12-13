@@ -20,13 +20,13 @@ public class EmailNotificationService {
     
     private final static Logger log = LoggerFactory.getLogger(EmailNotificationService.class);
 
-    @Value("${mail.fromAddress:no-reply@noreply.com}") private String fromAddress;
-    @Value("${smtp.user:user}") private String smtpUser;
-    @Value("${smtp.password:password}") private String smtpPassword;
-    @Value("${smtp.host:smtp.gmail.com}") private String smtpHost;
-    @Value("${smtp.port:587}") private int smtpPort;
+    @Value("${mail.fromAddress}") private String fromAddress;
+    @Value("${smtp.user}") private String smtpUser;
+    @Value("${smtp.password}") private String smtpPassword;
+    @Value("${smtp.host}") private String smtpHost;
+    @Value("${smtp.port}") private int smtpPort;
     @Value("${application.hostname}") private String appHost;
-    @Value("${mail.enabled:true}") private boolean mailEnabled;
+    @Value("${mail.enabled}") private boolean mailEnabled;
     
     private final static String SUBJECT = "Sorpresa!";
     private final static String BODY_TEMPLATE = "Hay un <a href='%s'>mensaje<a> para ti.";
